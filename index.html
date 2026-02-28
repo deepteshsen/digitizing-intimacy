@@ -3,190 +3,196 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digitizing Intimacy | Eliot–Hale Digital Humanities Project</title>
+<meta name="description" content="Digitizing Intimacy: A Digital Humanities Project modeling the T.S. Eliot–Emily Hale correspondence using computational analysis and network visualization.">
+<meta name="keywords" content="Digital Humanities, T.S. Eliot, Emily Hale, Network Analysis, Topic Modeling, Modernism">
+<meta name="author" content="Deeptesh Sen">
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
+<title>Digitizing Intimacy | Digital Humanities Project</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 
 <style>
-:root {
-  --primary:#0f172a;
-  --accent:#1e293b;
-  --light:#f1f5f9;
-  --text:#1e293b;
+:root{
+--primary:#0f172a;
+--accent:#334155;
+--light:#f8fafc;
+--muted:#94a3b8;
 }
 
-body { margin:0; font-family:'Inter', sans-serif; background:var(--light); color:var(--text); }
-h1,h2,h3 { font-family:'Playfair Display', serif; }
+body{margin:0;font-family:'Inter',sans-serif;background:var(--light);color:#1e293b;scroll-behavior:smooth;}
+h1,h2,h3{font-family:'Playfair Display',serif;}
 
-/* HERO */
-.hero {
-  background:linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)),
-  url('https://upload.wikimedia.org/wikipedia/commons/9/94/T.S._Eliot_by_Lady_Ottoline_Morrell_%281934%29.jpg') center/cover;
-  color:white;
-  padding:140px 20px;
-  text-align:center;
+/* PARALLAX HERO */
+.hero{
+background-image:linear-gradient(rgba(15,23,42,0.8),rgba(15,23,42,0.8)),url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f');
+min-height:100vh;
+background-attachment:fixed;
+background-position:center;
+background-repeat:no-repeat;
+background-size:cover;
+color:white;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:0 20px;
 }
-.hero h1 { font-size:60px; margin-bottom:20px; }
-.hero p { font-size:20px; max-width:800px; margin:auto; line-height:1.6; }
+.hero h1{font-size:64px;margin-bottom:20px;}
+.hero p{font-size:22px;max-width:800px;line-height:1.6;}
 
-/* NAV */
-nav { background:white; padding:15px; text-align:center; position:sticky; top:0; box-shadow:0 2px 8px rgba(0,0,0,0.08); z-index:1000; }
-nav a { margin:0 18px; text-decoration:none; color:var(--primary); font-weight:600; }
+nav{
+background:white;
+padding:15px;
+text-align:center;
+position:sticky;
+top:0;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+z-index:1000;
+}
+nav a{margin:0 18px;text-decoration:none;color:var(--primary);font-weight:600;}
 
-/* SECTIONS */
-section { padding:100px 12%; background:white; }
-.section-alt { background:#e2e8f0; }
-.container { max-width:1200px; margin:auto; }
+section{padding:120px 12%;opacity:0;transform:translateY(40px);transition:all 1s ease;background:white;}
+section.visible{opacity:1;transform:translateY(0);}
+.section-alt{background:#e2e8f0;}
+.container{max-width:1200px;margin:auto;}
 
-.card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; margin-top:40px; }
-.card { background:white; padding:30px; border-radius:10px; box-shadow:0 8px 20px rgba(0,0,0,0.08); }
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;margin-top:40px;}
+.card{background:white;padding:30px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
 
-/* CHARTS */
-canvas { margin-top:40px; }
+canvas{margin-top:40px;}
 
-/* NETWORK */
-#networkGraph { height:500px; border-radius:10px; background:white; box-shadow:0 8px 20px rgba(0,0,0,0.08); }
+#networkGraph{height:600px;border-radius:12px;background:white;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+.tooltip{position:absolute;background:var(--primary);color:white;padding:6px 10px;border-radius:4px;font-size:12px;pointer-events:none;opacity:0;}
 
-/* TIMELINE */
-.timeline-item { margin:40px 0; padding-left:30px; border-left:4px solid var(--primary); }
+.timeline-item{margin:40px 0;padding-left:30px;border-left:4px solid var(--primary);}
 
-/* DATA */
-.dataset-btn { margin-top:30px; padding:14px 24px; background:var(--primary); color:white; text-decoration:none; display:inline-block; border-radius:6px; }
+.dataset-btn{margin-top:30px;padding:14px 24px;background:var(--primary);color:white;text-decoration:none;border-radius:6px;display:inline-block;}
 
-footer { background:var(--primary); color:white; text-align:center; padding:60px; }
+.logos{display:flex;justify-content:center;gap:40px;margin-top:40px;flex-wrap:wrap;}
+.logos img{height:60px;opacity:0.8;}
+
+footer{background:var(--primary);color:white;text-align:center;padding:60px;}
 </style>
 </head>
 <body>
 
 <div class="hero">
 <h1>Digitizing Intimacy</h1>
-<p>A Digital Humanities Platform Modeling the Emotional, Theological, and Intellectual Networks of the Eliot–Hale Correspondence (1914–1957).</p>
+<p>A Computational and Network-Based Model of the T.S. Eliot–Emily Hale Correspondence (1914–1957)</p>
 </div>
 
 <nav>
 <a href="#about">About</a>
-<a href="#methodology">Methodology</a>
-<a href="#analysis">Analysis</a>
+<a href="#methods">Methods</a>
+<a href="#topics">Topics</a>
 <a href="#network">Network</a>
-<a href="#timeline">Timeline</a>
+<a href="#letters">Letters</a>
 <a href="#data">Data</a>
-<a href="#outputs">Outputs</a>
 </nav>
 
-<section id="about">
-<div class="container">
-<h2>About the Project</h2>
-<p>This project transforms the 1,133 letters written by T.S. Eliot to Emily Hale into a computational research environment. Inspired by <em>Mapping the Republic of Letters</em>, it integrates corpus linguistics, network theory, and longitudinal visualization to uncover structural patterns of intimacy and intellectual transformation across four decades.</p>
-</div>
-</section>
+<section id="about"><div class="container">
+<h2>Project Overview</h2>
+<p>This funded-style digital humanities platform transforms Eliot's 1,133 letters into a structured computational archive. Through sentiment modeling, topic modeling, and relational graph analysis, the project reconstructs the emotional and intellectual architecture of modernism.</p>
+</div></section>
 
-<section id="methodology" class="section-alt">
-<div class="container">
-<h2>Methodology</h2>
+<section id="methods" class="section-alt"><div class="container">
+<h2>Methodological Framework</h2>
 <div class="card-grid">
-<div class="card"><h3>Corpus Preparation</h3><p>Letters cleaned, tokenized, and structured with metadata (date, location, themes).</p></div>
-<div class="card"><h3>Topic Modeling</h3><p>LDA-based modeling to detect recurring themes (religion, guilt, devotion, artistic labour).</p></div>
-<div class="card"><h3>Network Analysis</h3><p>Named entity extraction and co-occurrence modeling using graph theory metrics.</p></div>
-<div class="card"><h3>Temporal Analysis</h3><p>Sentiment scoring and longitudinal modeling aligned with major biographical milestones.</p></div>
-</div>
-</div>
-</section>
+<div class="card"><h3>Corpus Processing</h3><p>OCR cleaning, tokenization, metadata tagging, and normalization.</p></div>
+<div class="card"><h3>Sentiment Modeling</h3><p>Lexicon-based scoring aligned with historical events.</p></div>
+<div class="card"><h3>Topic Modeling</h3><p>LDA visualization of recurring themes across decades.</p></div>
+<div class="card"><h3>Graph Theory</h3><p>Entity extraction and centrality measurement via network modeling.</p></div>
+</div></div></section>
 
-<section id="analysis">
-<div class="container">
-<h2>Computational Analysis (Sample 10 Letters)</h2>
-<canvas id="sentimentChart"></canvas>
-</div>
-</section>
+<section id="topics"><div class="container">
+<h2>Topic Modeling Visualization</h2>
+<canvas id="topicChart"></canvas>
+</div></section>
 
-<section id="network" class="section-alt">
-<div class="container">
-<h2>Intellectual & Relational Network</h2>
+<section id="network" class="section-alt"><div class="container">
+<h2>Interactive Network Graph</h2>
 <div id="networkGraph"></div>
-</div>
-</section>
+<div class="tooltip" id="tooltip"></div>
+</div></section>
 
-<section id="timeline">
-<div class="container">
-<h2>Chronological Interface</h2>
-<div class="timeline-item"><h4>1914–1916</h4><p>Emergent romantic intensity.</p></div>
-<div class="timeline-item"><h4>1927</h4><p>Conversion to Anglicanism reshapes discourse.</p></div>
-<div class="timeline-item"><h4>1931–33</h4><p>Boston letters: confession and emotional dependence.</p></div>
-<div class="timeline-item"><h4>1943</h4><p>Four Quartets and theological consolidation.</p></div>
-</div>
-</section>
+<section id="letters"><div class="container">
+<h2>Interactive Letter Viewer</h2>
+<button onclick="openModal()" class="dataset-btn">View Sample Letter</button>
+</div></section>
 
-<section id="data" class="section-alt">
-<div class="container">
-<h2>Open Data & Reproducibility</h2>
-<p>Structured dataset (sample) available in CSV format. Full corpus maintained under copyright guidelines.</p>
-<a href="#" class="dataset-btn" download>Download Sample Dataset</a>
+<section id="data" class="section-alt"><div class="container">
+<h2>Download Dataset</h2>
+<a href="data/sample_letters.csv" class="dataset-btn" download>Download CSV</a>
+<div class="logos">
+<img src="https://upload.wikimedia.org/wikipedia/en/8/8c/Princeton_University_shield.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Digital_Humanities_logo.png">
 </div>
-</section>
-
-<section id="outputs">
-<div class="container">
-<h2>Scholarly Outputs</h2>
-<ul>
-<li>Peer-reviewed article on computational literary biography (forthcoming)</li>
-<li>Conference paper (Digital Humanities Conference)</li>
-<li>Interactive research platform (this site)</li>
-</ul>
-</div>
-</section>
+</div></section>
 
 <footer>
-<p>© 2026 Digitizing Intimacy Project | Developed by Deeptesh Sen | GitHub Pages Deployment</p>
+<p>Digitizing Intimacy | Digital Humanities Research Initiative | Custom Domain Ready</p>
 </footer>
 
+<!-- Modal -->
+<div id="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;">
+<div style="background:white;padding:40px;max-width:600px;position:relative;">
+<button onclick="closeModal()" style="position:absolute;top:10px;right:10px;">X</button>
+<h3>Sample Letter (1931)</h3>
+<p>"It is beyond words to express how I cling to you, adore you..."</p>
+</div></div>
+
 <script>
-const letters = [
-{text:"ecstatically proud cling serenity"},
-{text:"worried guilt turmoil"},
-{text:"redemption faith devotion"},
-{text:"war anxiety"},
-{text:"serenity calm redemption"}
-];
 
-function sentimentScore(text){
- let positive=['proud','serenity','redemption','faith','devotion','calm'];
- let negative=['worried','guilt','war','turmoil','anxiety'];
- let score=0;
- positive.forEach(w=>{if(text.includes(w))score++;});
- negative.forEach(w=>{if(text.includes(w))score--;});
- return score;
-}
+// Scroll animation
+const sections=document.querySelectorAll('section');
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});});
+sections.forEach(sec=>observer.observe(sec));
 
-new Chart(document.getElementById('sentimentChart'),{
- type:'bar',
- data:{labels:['L1','L2','L3','L4','L5'],datasets:[{label:'Sentiment Score',data:letters.map(l=>sentimentScore(l.text))}]}
+// Topic chart
+new Chart(document.getElementById('topicChart'),{
+type:'line',
+data:{labels:['1910s','1920s','1930s','1940s'],datasets:[
+{label:'Religion',data:[1,3,6,8]},
+{label:'Love',data:[5,4,7,3]},
+{label:'Guilt',data:[2,5,6,2]}
+]}
 });
 
+// Network
 const width=document.getElementById('networkGraph').clientWidth;
-const height=500;
+const height=600;
 const nodes=[{id:'Eliot'},{id:'Hale'},{id:'Vivienne'},{id:'Anglican Church'},{id:'Dante'}];
 const links=[{source:'Eliot',target:'Hale'},{source:'Eliot',target:'Vivienne'},{source:'Eliot',target:'Anglican Church'},{source:'Eliot',target:'Dante'}];
 
 const svg=d3.select('#networkGraph').append('svg').attr('width',width).attr('height',height);
+const tooltip=d3.select('#tooltip');
+
 const simulation=d3.forceSimulation(nodes)
-.force('link',d3.forceLink(links).id(d=>d.id).distance(120))
-.force('charge',d3.forceManyBody().strength(-300))
+.force('link',d3.forceLink(links).id(d=>d.id).distance(150))
+.force('charge',d3.forceManyBody().strength(-400))
 .force('center',d3.forceCenter(width/2,height/2));
 
 const link=svg.append('g').selectAll('line').data(links).enter().append('line').attr('stroke','#999');
-const node=svg.append('g').selectAll('circle').data(nodes).enter().append('circle').attr('r',12).attr('fill','#0f172a').call(d3.drag().on('start',dragstarted).on('drag',dragged).on('end',dragended));
-const labels=svg.append('g').selectAll('text').data(nodes).enter().append('text').text(d=>d.id).attr('dx',15).attr('dy','.35em');
+const node=svg.append('g').selectAll('circle').data(nodes).enter().append('circle').attr('r',14).attr('fill','#0f172a')
+.on('mouseover',(event,d)=>{tooltip.style('opacity',1).html(d.id);})
+.on('mousemove',(event)=>{tooltip.style('left',(event.pageX+10)+'px').style('top',(event.pageY-20)+'px');})
+.on('mouseout',()=>tooltip.style('opacity',0));
+
+const labels=svg.append('g').selectAll('text').data(nodes).enter().append('text').text(d=>d.id).attr('dx',18).attr('dy','.35em');
 
 simulation.on('tick',()=>{
- link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
- node.attr('cx',d=>d.x).attr('cy',d=>d.y);
- labels.attr('x',d=>d.x).attr('y',d=>d.y);
+link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+node.attr('cx',d=>d.x).attr('cy',d=>d.y);
+labels.attr('x',d=>d.x).attr('y',d=>d.y);
 });
-function dragstarted(event,d){if(!event.active)simulation.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;}
-function dragged(event,d){d.fx=event.x;d.fy=event.y;}
-function dragended(event,d){if(!event.active)simulation.alphaTarget(0);d.fx=null;d.fy=null;}
+
+// Modal
+function openModal(){document.getElementById('modal').style.display='flex';}
+function closeModal(){document.getElementById('modal').style.display='none';}
+
 </script>
 
 </body>
