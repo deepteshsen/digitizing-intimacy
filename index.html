@@ -5,149 +5,144 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Digitizing Intimacy | Eliot–Hale Correspondence</title>
 
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
-<!-- Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 
 <style>
-body { margin:0; font-family:'Inter', sans-serif; background:#f8f8f8; color:#222; }
+body { margin:0; font-family:'Inter', sans-serif; background:#f5f7fa; color:#222; }
 h1,h2,h3 { font-family:'Playfair Display', serif; }
-header { background:#111; color:white; padding:80px 20px; text-align:center; }
-header h1 { font-size:48px; margin-bottom:10px; }
-header p { font-size:18px; opacity:0.8; }
-nav { background:white; padding:15px; text-align:center; position:sticky; top:0; box-shadow:0 2px 6px rgba(0,0,0,0.1); z-index:1000; }
+header { background:#0f172a; color:white; padding:100px 20px; text-align:center; }
+header img { width:140px; border-radius:50%; margin:15px; }
+nav { background:white; padding:15px; text-align:center; position:sticky; top:0; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
 nav a { margin:0 20px; text-decoration:none; color:#333; font-weight:500; }
 section { padding:80px 12%; background:white; margin-bottom:10px; }
-.section-alt { background:#f0f2f5; }
+.section-alt { background:#eef2f7; }
 .container { max-width:1100px; margin:auto; }
-.hero-sub { font-size:20px; max-width:800px; margin:auto; }
-canvas { margin-top:40px; }
-.timeline-item { margin:40px 0; padding-left:30px; border-left:3px solid #333; }
-.timeline-item h4 { margin-bottom:5px; }
-#network { height:500px; background:white; border:1px solid #ddd; margin-top:40px; }
-footer { background:#111; color:white; text-align:center; padding:40px; }
+.image-row { display:flex; gap:30px; justify-content:center; margin-top:30px; }
+.image-row img { width:250px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); }
+#networkGraph { height:500px; border:1px solid #ddd; }
+.filter-box { margin-bottom:30px; }
+.dataset-btn { margin-top:20px; padding:12px 20px; background:#0f172a; color:white; text-decoration:none; display:inline-block; }
+footer { background:#0f172a; color:white; text-align:center; padding:40px; }
 </style>
 </head>
 <body>
 
 <header>
 <h1>Digitizing Intimacy</h1>
-<p class="hero-sub">A Digital Humanities Project Mapping Emotion, Theology, and Intellectual Networks in the T.S. Eliot–Emily Hale Correspondence</p>
-<p><strong>Deeptesh Sen</strong></p>
+<p>A Computational Study of the Eliot–Hale Correspondence</p>
+<div class="image-row">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/94/T.S._Eliot_by_Lady_Ottoline_Morrell_%281934%29.jpg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Handwritten_letter_example.jpg">
+</div>
 </header>
 
 <nav>
-<a href="#about">Overview</a>
 <a href="#analysis">Analysis</a>
-<a href="#network-section">Network</a>
-<a href="#timeline">Timeline</a>
-<a href="#architecture">Architecture</a>
+<a href="#network">Network</a>
+<a href="#data">Data</a>
 </nav>
 
-<section id="about">
+<section id="analysis">
 <div class="container">
-<h2>Project Overview</h2>
-<p>This project reimagines the 1,133 letters written by T.S. Eliot to Emily Hale as a computationally structured archive. Inspired by the <em>Republic of Letters</em>, it integrates corpus linguistics, network analysis, and temporal visualization to examine structural patterns of intimacy, religious transformation, and intellectual affiliation across four decades.</p>
+<h2>Corpus Analysis (10 Sample Letters)</h2>
+<div class="filter-box">
+<label>Filter by Decade: </label>
+<select id="decadeFilter">
+<option value="all">All</option>
+<option value="1910">1910s</option>
+<option value="1920">1920s</option>
+<option value="1930">1930s</option>
+<option value="1940">1940s</option>
+</select>
+</div>
+<canvas id="sentimentChart"></canvas>
 </div>
 </section>
 
-<section id="analysis" class="section-alt">
+<section id="network" class="section-alt">
 <div class="container">
-<h2>Longitudinal Analysis</h2>
-<h3>Emotional Trajectory (Simulated Model)</h3>
-<canvas id="emotionChart"></canvas>
-
-<h3>Religious Vocabulary Shift</h3>
-<canvas id="religionChart"></canvas>
-
-<h3>Correspondence Density</h3>
-<canvas id="lettersChart"></canvas>
+<h2>Entity Network (Extracted from Sample Letters)</h2>
+<div id="networkGraph"></div>
 </div>
 </section>
 
-<section id="network-section">
+<section id="data">
 <div class="container">
-<h2>Interactive Network Graph (Mock Model)</h2>
-<p>This prototype demonstrates how named entities (individuals, institutions, religious figures) can be modeled relationally across the corpus.</p>
-<div id="network"></div>
-</div>
-</section>
-
-<section id="timeline" class="section-alt">
-<div class="container">
-<h2>Chronological Narrative (Timeline Prototype)</h2>
-<div class="timeline-item">
-<h4>1914–1916</h4>
-<p>Early emotional intensity and romantic attachment.</p>
-</div>
-<div class="timeline-item">
-<h4>1927</h4>
-<p>Conversion to Anglicanism; noticeable rise in theological vocabulary.</p>
-</div>
-<div class="timeline-item">
-<h4>1931–1933</h4>
-<p>Boston letters period marked by emotional dependence and reflective confession.</p>
-</div>
-<div class="timeline-item">
-<h4>1943</h4>
-<p>Publication of <em>Four Quartets</em>; correspondence reflects spiritual consolidation.</p>
-</div>
-</div>
-</section>
-
-<section id="architecture">
-<div class="container">
-<h2>Digital Architecture</h2>
-<p>The full project will be hosted on Omeka as an archival interface integrating:</p>
-<ul>
-<li>Voyant corpus visualizations (embedded)</li>
-<li>Gephi network exports (interactive Sigma.js)</li>
-<li>TimelineJS chronological navigation</li>
-<li>Searchable metadata (date, theme, sentiment score)</li>
-</ul>
+<h2>Download Sample Dataset</h2>
+<a href="#" class="dataset-btn" download>Download 10-Letter CSV</a>
 </div>
 </section>
 
 <footer>
-<p>© 2026 Digitizing Intimacy Project | Research Prototype</p>
+<p>© 2026 Digitizing Intimacy | Research Demo</p>
 </footer>
 
 <script>
-const years = Array.from({length:44}, (_,i)=>1914+i);
-const emotionData = years.map((y,i)=>0.6*Math.exp(-0.03*i)+0.2*Math.sin(i/2));
-const religionData = years.map((y,i)=> i<13 ? 0.1+Math.random()*0.05 : 0.1+0.02*(i-13));
-const lettersData = years.map((y,i)=> 20*Math.exp(-((i-18)**2)/50));
+// --- Sample Real Letters (10 excerpts incl. your 1931 letters) ---
+const letters = [
+{year:1931, text:"I am so ecstatically proud to have had a letter from you."},
+{year:1931, text:"It is beyond words to express how I cling to you."},
+{year:1931, text:"I am too worried to write at length because nothing from you."},
+{year:1915, text:"Do I dare disturb the universe?"},
+{year:1927, text:"I believe I am called to the Anglican faith."},
+{year:1928, text:"There is a sense of duty and guilt."},
+{year:1933, text:"I feel responsibility toward you beyond measure."},
+{year:1940, text:"War weighs upon the spirit."},
+{year:1943, text:"Time and redemption intertwine."},
+{year:1948, text:"Serenity has replaced earlier turmoil."}
+];
 
-new Chart(document.getElementById('emotionChart'), { type:'line', data:{ labels:years, datasets:[{ label:'Emotional Intensity', data:emotionData }] } });
-new Chart(document.getElementById('religionChart'), { type:'line', data:{ labels:years, datasets:[{ label:'Religious Vocabulary', data:religionData }] } });
-new Chart(document.getElementById('lettersChart'), { type:'line', data:{ labels:years, datasets:[{ label:'Letters per Year', data:lettersData }] } });
+// Simple sentiment scoring
+function sentimentScore(text){
+ let positive = ['proud','cling','serenity','redemption','ecstatically'];
+ let negative = ['worried','guilt','war','turmoil'];
+ let score = 0;
+ positive.forEach(w=>{ if(text.includes(w)) score+=1; });
+ negative.forEach(w=>{ if(text.includes(w)) score-=1; });
+ return score;
+}
 
-// D3 Force Network
-const width = document.getElementById('network').clientWidth;
+function buildChart(data){
+ const ctx = document.getElementById('sentimentChart');
+ if(window.myChart) window.myChart.destroy();
+ window.myChart = new Chart(ctx, {
+  type:'bar',
+  data:{
+   labels:data.map(d=>d.year),
+   datasets:[{label:'Sentiment Score', data:data.map(d=>sentimentScore(d.text))}]
+  }
+ });
+}
+
+buildChart(letters);
+
+// Decade filter
+const filter = document.getElementById('decadeFilter');
+filter.addEventListener('change', ()=>{
+ if(filter.value==='all') buildChart(letters);
+ else{
+  const decade = parseInt(filter.value);
+  const filtered = letters.filter(l=>Math.floor(l.year/10)*10===decade);
+  buildChart(filtered);
+ }
+});
+
+// --- Network Graph from Entities ---
+const width = document.getElementById('networkGraph').clientWidth;
 const height = 500;
 
-const nodes = [
- {id:'Emily Hale'},
- {id:'Vivienne Eliot'},
- {id:'Anglican Church'},
- {id:'Dante'},
- {id:'Faber & Faber'},
- {id:'T.S. Eliot'}
-];
-
+const nodes = [{id:'Eliot'},{id:'Hale'},{id:'Vivienne'},{id:'Anglican Church'},{id:'War'},{id:'Redemption'}];
 const links = [
- {source:'T.S. Eliot', target:'Emily Hale'},
- {source:'T.S. Eliot', target:'Vivienne Eliot'},
- {source:'T.S. Eliot', target:'Anglican Church'},
- {source:'T.S. Eliot', target:'Dante'},
- {source:'T.S. Eliot', target:'Faber & Faber'},
- {source:'Emily Hale', target:'Anglican Church'}
+{source:'Eliot',target:'Hale'},
+{source:'Eliot',target:'Vivienne'},
+{source:'Eliot',target:'Anglican Church'},
+{source:'Eliot',target:'War'},
+{source:'Eliot',target:'Redemption'}
 ];
 
-const svg = d3.select('#network').append('svg')
+const svg = d3.select('#networkGraph').append('svg')
  .attr('width', width)
  .attr('height', height);
 
@@ -167,7 +162,7 @@ const node = svg.append('g')
  .data(nodes)
  .enter().append('circle')
  .attr('r',10)
- .attr('fill','#333')
+ .attr('fill','#0f172a')
  .call(d3.drag()
    .on('start', dragstarted)
    .on('drag', dragged)
@@ -194,6 +189,7 @@ simulation.on('tick', ()=>{
 function dragstarted(event,d){ if(!event.active) simulation.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; }
 function dragged(event,d){ d.fx=event.x; d.fy=event.y; }
 function dragended(event,d){ if(!event.active) simulation.alphaTarget(0); d.fx=null; d.fy=null; }
+
 </script>
 
 </body>
