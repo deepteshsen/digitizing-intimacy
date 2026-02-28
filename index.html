@@ -30,18 +30,26 @@ h1,h2,h3{font-family:'Playfair Display',serif;}
 .hero{
 background:
 linear-gradient(rgba(27,38,59,0.45),rgba(27,38,59,0.45)),
-url('images/Eliot-Hale.jpg') center/cover no-repeat;
+url('images/Eliot-Hale.jpg') right center/cover no-repeat;
 min-height:100vh;
 display:flex;
 flex-direction:column;
 justify-content:flex-end;
 align-items:flex-start;
-padding:140px 10% 160px 10%;
+padding:140px 12% 160px 12%;
 color:white;
 }
 
-.hero h1{font-size:64px;margin:0 0 20px 0;}
-.hero p{font-size:22px;max-width:700px;}
+.hero h1{
+font-size:64px;
+margin:0 0 20px 0;
+max-width:650px;
+}
+
+.hero p{
+font-size:22px;
+max-width:600px;
+}
 
 /* NAV */
 nav{
@@ -128,6 +136,7 @@ opacity:0;
 <a onclick="showSection(event,'network')">Network</a>
 <a onclick="showSection(event,'tools')">Tools & Techniques</a>
 <a onclick="showSection(event,'budget')">Budget</a>
+<a onclick="showSection(event,'letters')">Eliot–Hale Letters</a>
 </nav>
 
 <section id="overview" class="active">
@@ -168,6 +177,15 @@ opacity:0;
 <h2>Budget Framework</h2>
 <p>Funding requirements are modest due to reliance on open-source tools. Core costs include research assistance for corpus cleaning and metadata tagging; server hosting and domain maintenance; technical development for advanced interactive visualisation; and dissemination through conferences and peer-reviewed publication.</p>
 <p>Institutional support will provide infrastructure, IT consultation, and long-term digital preservation. Sustainability planning includes regular backups, repository version control, and clear documentation of scripts and data schemas. The long-term goal is to establish a durable digital research environment that contributes both to Eliot scholarship and to computational literary studies more broadly.</p>
+</section>
+
+<section id="letters">
+<h2>Eliot–Hale Letters</h2>
+<p>You can read the full correspondence between Eliot and Hale here: 
+<a href="https://tseliot.com/the-eliot-hale-letters" target="_blank" style="color:#1b263b;font-weight:600;">
+The Eliot–Hale Letters Digital Archive
+</a>.
+</p>
 </section>
 
 <footer>
