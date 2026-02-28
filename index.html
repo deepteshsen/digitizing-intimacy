@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Digitizing Intimacy: A Digital Humanities Project modeling the T.S. Eliot–Emily Hale correspondence using computational analysis and network visualization.">
-<meta name="keywords" content="Digital Humanities, T.S. Eliot, Emily Hale, Network Analysis, Topic Modeling, Modernism">
+<meta name="description" content="Digitizing Intimacy: A Digital Humanities Project modelling the T.S. Eliot–Emily Hale correspondence (1930–1969).">
 <meta name="author" content="Deeptesh Sen">
 <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
-<title>Digitizing Intimacy | Digital Humanities Project</title>
+<title>Digitizing Intimacy | 1930–1969 | Digital Humanities Project</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -15,150 +14,180 @@
 
 <style>
 :root{
---primary:#0f172a;
---accent:#334155;
---light:#f8fafc;
---muted:#94a3b8;
+--primary:#1b263b;
+--accent:#415a77;
+--light:#f4f1ea;
 }
 
-body{margin:0;font-family:'Inter',sans-serif;background:var(--light);color:#1e293b;scroll-behavior:smooth;}
+body{
+margin:0;
+font-family:'Inter',sans-serif;
+background:url('https://www.transparenttextures.com/patterns/aged-paper.png');
+color:#1b263b;
+scroll-behavior:smooth;
+}
+
 h1,h2,h3{font-family:'Playfair Display',serif;}
 
-/* PARALLAX HERO */
+/* HERO */
 .hero{
-background-image:linear-gradient(rgba(15,23,42,0.8),rgba(15,23,42,0.8)),url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f');
-min-height:100vh;
-background-attachment:fixed;
-background-position:center;
-background-repeat:no-repeat;
-background-size:cover;
-color:white;
+background:linear-gradient(rgba(27,38,59,0.85),rgba(27,38,59,0.85)),
+url('images/eliot-hale-header.jpg') center/cover;
+min-height:90vh;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-padding:0 20px;
+color:white;
+padding:40px;
 }
-.hero h1{font-size:64px;margin-bottom:20px;}
+.hero h1{font-size:60px;margin-bottom:20px;}
 .hero p{font-size:22px;max-width:800px;line-height:1.6;}
 
 nav{
-background:white;
+background:#ffffffee;
 padding:15px;
 text-align:center;
 position:sticky;
 top:0;
-box-shadow:0 2px 8px rgba(0,0,0,0.08);
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
 z-index:1000;
 }
 nav a{margin:0 18px;text-decoration:none;color:var(--primary);font-weight:600;}
 
-section{padding:120px 12%;opacity:0;transform:translateY(40px);transition:all 1s ease;background:white;}
+section{
+padding:100px 12%;
+background:#ffffffdd;
+margin:40px;
+border-radius:10px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+opacity:0;
+transform:translateY(40px);
+transition:all 1s ease;
+}
 section.visible{opacity:1;transform:translateY(0);}
-.section-alt{background:#e2e8f0;}
-.container{max-width:1200px;margin:auto;}
 
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;margin-top:40px;}
-.card{background:white;padding:30px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+.timeline-controls{
+text-align:center;
+margin-bottom:30px;
+}
 
-canvas{margin-top:40px;}
+.timeline-bar{
+display:flex;
+justify-content:space-between;
+max-width:800px;
+margin:auto;
+}
+.timeline-bar div{
+cursor:pointer;
+padding:10px 15px;
+background:var(--accent);
+color:white;
+border-radius:5px;
+}
 
-#networkGraph{height:600px;border-radius:12px;background:white;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
-.tooltip{position:absolute;background:var(--primary);color:white;padding:6px 10px;border-radius:4px;font-size:12px;pointer-events:none;opacity:0;}
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+}
+.modal-content{
+background:white;
+padding:40px;
+max-width:700px;
+position:relative;
+border-radius:8px;
+}
 
-.timeline-item{margin:40px 0;padding-left:30px;border-left:4px solid var(--primary);}
-
-.dataset-btn{margin-top:30px;padding:14px 24px;background:var(--primary);color:white;text-decoration:none;border-radius:6px;display:inline-block;}
-
-.logos{display:flex;justify-content:center;gap:40px;margin-top:40px;flex-wrap:wrap;}
-.logos img{height:60px;opacity:0.8;}
-
-footer{background:var(--primary);color:white;text-align:center;padding:60px;}
+footer{
+background:var(--primary);
+color:white;
+text-align:center;
+padding:60px;
+}
 </style>
 </head>
 <body>
 
 <div class="hero">
 <h1>Digitizing Intimacy</h1>
-<p>A Computational and Network-Based Model of the T.S. Eliot–Emily Hale Correspondence (1914–1957)</p>
+<p>A Computational and Network-Based Modelling of the T.S. Eliot–Emily Hale Correspondence (1930–1969)</p>
 </div>
 
 <nav>
-<a href="#about">About</a>
-<a href="#methods">Methods</a>
-<a href="#topics">Topics</a>
+<a href="#overview">Overview</a>
+<a href="#timeline">Timeline</a>
+<a href="#analysis">Analysis</a>
 <a href="#network">Network</a>
-<a href="#letters">Letters</a>
-<a href="#data">Data</a>
 </nav>
 
-<section id="about"><div class="container">
-<h2>Project Overview</h2>
-<p>This funded-style digital humanities platform transforms Eliot's 1,133 letters into a structured computational archive. Through sentiment modeling, topic modeling, and relational graph analysis, the project reconstructs the emotional and intellectual architecture of modernism.</p>
-</div></section>
+<section id="overview">
+<h2>A Brief Overview of the Material</h2>
+<p>In January 2020, more than five decades after his death, 1,133 letters written by Eliot to Emily Hale were unsealed in the archives of the Firestone Library in Princeton University. The unsealing of these letters marked the culmination of one of the longest-running literary mysteries and proved to be a watershed moment in the history of Eliot studies. Since then, these letters have inspired excitement and consternation in equal measure, helping shape a compelling narrative about Eliot’s romantic association with Hale, and the effect that it had on his poetry. “It is the missing piece of his career and certainly the most significant revelation about a major poet of the 20th century that we’ve had,” Tony Cuda, director of the T.S. Eliot International Summer School in London, told the Guardian. As many scholars have pointed out, these letters may well be considered the final and most important piece in the jigsaw puzzle in our efforts to understand Eliot as a poet.</p>
+</section>
 
-<section id="methods" class="section-alt"><div class="container">
-<h2>Methodological Framework</h2>
-<div class="card-grid">
-<div class="card"><h3>Corpus Processing</h3><p>OCR cleaning, tokenization, metadata tagging, and normalization.</p></div>
-<div class="card"><h3>Sentiment Modeling</h3><p>Lexicon-based scoring aligned with historical events.</p></div>
-<div class="card"><h3>Topic Modeling</h3><p>LDA visualization of recurring themes across decades.</p></div>
-<div class="card"><h3>Graph Theory</h3><p>Entity extraction and centrality measurement via network modeling.</p></div>
-</div></div></section>
-
-<section id="topics"><div class="container">
-<h2>Topic Modeling Visualization</h2>
-<canvas id="topicChart"></canvas>
-</div></section>
-
-<section id="network" class="section-alt"><div class="container">
-<h2>Interactive Network Graph</h2>
-<div id="networkGraph"></div>
-<div class="tooltip" id="tooltip"></div>
-</div></section>
-
-<section id="letters"><div class="container">
-<h2>Interactive Letter Viewer</h2>
-<button onclick="openModal()" class="dataset-btn">View Sample Letter</button>
-</div></section>
-
-<section id="data" class="section-alt"><div class="container">
-<h2>Download Dataset</h2>
-<a href="data/sample_letters.csv" class="dataset-btn" download>Download CSV</a>
-<div class="logos">
-<img src="https://upload.wikimedia.org/wikipedia/en/8/8c/Princeton_University_shield.svg">
-<img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Digital_Humanities_logo.png">
+<section id="timeline">
+<h2>Interactive Chronological Timeline (1930–1969)</h2>
+<div class="timeline-controls">
+<p>Click a year to explore:</p>
+<div class="timeline-bar" id="timelineBar"></div>
 </div>
-</div></section>
+<div id="timelineContent"></div>
+</section>
+
+<section id="analysis">
+<h2>Topic Modelling (Sample Data)</h2>
+<canvas id="topicChart"></canvas>
+</section>
+
+<section id="network">
+<h2>Relational Network Graph</h2>
+<div id="networkGraph" style="height:600px;"></div>
+</section>
 
 <footer>
-<p>Digitizing Intimacy | Digital Humanities Research Initiative | Custom Domain Ready</p>
+<p>Digitizing Intimacy | 1930–1969 | Digital Humanities Research Initiative</p>
 </footer>
 
-<!-- Modal -->
-<div id="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;">
-<div style="background:white;padding:40px;max-width:600px;position:relative;">
-<button onclick="closeModal()" style="position:absolute;top:10px;right:10px;">X</button>
-<h3>Sample Letter (1931)</h3>
-<p>"It is beyond words to express how I cling to you, adore you..."</p>
-</div></div>
-
 <script>
-
-// Scroll animation
+// Scroll reveal
 const sections=document.querySelectorAll('section');
 const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});});
 sections.forEach(sec=>observer.observe(sec));
 
-// Topic chart
+// Timeline generation
+const start=1930;
+const end=1969;
+const timelineBar=document.getElementById('timelineBar');
+const timelineContent=document.getElementById('timelineContent');
+
+for(let year=start;year<=end;year+=5){
+ let div=document.createElement('div');
+ div.textContent=year;
+ div.onclick=function(){
+  timelineContent.innerHTML=`<h3>${year}</h3><p>Letters from ${year} reflect evolving emotional and theological patterns within Eliot's correspondence.</p>`;
+ };
+ timelineBar.appendChild(div);
+}
+
+// Topic modelling chart (simulated real proportions)
 new Chart(document.getElementById('topicChart'),{
-type:'line',
-data:{labels:['1910s','1920s','1930s','1940s'],datasets:[
-{label:'Religion',data:[1,3,6,8]},
-{label:'Love',data:[5,4,7,3]},
-{label:'Guilt',data:[2,5,6,2]}
-]}
+ type:'line',
+ data:{
+  labels:['1930s','1940s','1950s','1960s'],
+  datasets:[
+   {label:'Religion',data:[4,8,7,5]},
+   {label:'Love & Intimacy',data:[7,6,4,2]},
+   {label:'Guilt & Responsibility',data:[5,7,3,2]}
+  ]
+ }
 });
 
 // Network
@@ -168,31 +197,24 @@ const nodes=[{id:'Eliot'},{id:'Hale'},{id:'Vivienne'},{id:'Anglican Church'},{id
 const links=[{source:'Eliot',target:'Hale'},{source:'Eliot',target:'Vivienne'},{source:'Eliot',target:'Anglican Church'},{source:'Eliot',target:'Dante'}];
 
 const svg=d3.select('#networkGraph').append('svg').attr('width',width).attr('height',height);
-const tooltip=d3.select('#tooltip');
-
 const simulation=d3.forceSimulation(nodes)
 .force('link',d3.forceLink(links).id(d=>d.id).distance(150))
 .force('charge',d3.forceManyBody().strength(-400))
 .force('center',d3.forceCenter(width/2,height/2));
 
-const link=svg.append('g').selectAll('line').data(links).enter().append('line').attr('stroke','#999');
-const node=svg.append('g').selectAll('circle').data(nodes).enter().append('circle').attr('r',14).attr('fill','#0f172a')
-.on('mouseover',(event,d)=>{tooltip.style('opacity',1).html(d.id);})
-.on('mousemove',(event)=>{tooltip.style('left',(event.pageX+10)+'px').style('top',(event.pageY-20)+'px');})
-.on('mouseout',()=>tooltip.style('opacity',0));
-
-const labels=svg.append('g').selectAll('text').data(nodes).enter().append('text').text(d=>d.id).attr('dx',18).attr('dy','.35em');
+svg.append('g').selectAll('line').data(links).enter().append('line').attr('stroke','#555');
+svg.append('g').selectAll('circle').data(nodes).enter().append('circle').attr('r',14).attr('fill','#1b263b');
 
 simulation.on('tick',()=>{
-link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
-node.attr('cx',d=>d.x).attr('cy',d=>d.y);
-labels.attr('x',d=>d.x).attr('y',d=>d.y);
+ svg.selectAll('line')
+ .attr('x1',d=>d.source.x)
+ .attr('y1',d=>d.source.y)
+ .attr('x2',d=>d.target.x)
+ .attr('y2',d=>d.target.y);
+ svg.selectAll('circle')
+ .attr('cx',d=>d.x)
+ .attr('cy',d=>d.y);
 });
-
-// Modal
-function openModal(){document.getElementById('modal').style.display='flex';}
-function closeModal(){document.getElementById('modal').style.display='none';}
-
 </script>
 
 </body>
