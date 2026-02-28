@@ -24,44 +24,26 @@ color:#1b263b;
 overflow-x:hidden;
 }
 
-h1,h2,h3{
-font-family:'Playfair Display',serif;
-letter-spacing:0.5px;
-}
+h1,h2,h3{font-family:'Playfair Display',serif;}
 
-/* HERO FIXED */
+/* HERO */
 .hero{
 background:
-linear-gradient(rgba(27,38,59,0.5),rgba(27,38,59,0.5)),
+linear-gradient(rgba(27,38,59,0.45),rgba(27,38,59,0.45)),
 url('images/Eliot-Hale.jpg') center/cover no-repeat;
 min-height:100vh;
 display:flex;
 flex-direction:column;
 justify-content:flex-end;
 align-items:flex-start;
-padding:120px 10% 140px 10%;
+padding:140px 10% 160px 10%;
 color:white;
 }
 
-.hero h1{
-font-size:64px;
-margin:0 0 20px 0;
-animation:fadeUp 1.5s ease forwards;
-opacity:0;
-}
+.hero h1{font-size:64px;margin:0 0 20px 0;}
+.hero p{font-size:22px;max-width:700px;}
 
-.hero p{
-font-size:22px;
-max-width:700px;
-animation:fadeUp 2.5s ease forwards;
-opacity:0;
-}
-
-@keyframes fadeUp{
-from{opacity:0;transform:translateY(40px);} 
-to{opacity:1;transform:translateY(0);} }
-
-/* NAVIGATION */
+/* NAV */
 nav{
 background:#ffffffee;
 padding:15px;
@@ -78,42 +60,29 @@ text-decoration:none;
 color:var(--primary);
 font-weight:600;
 cursor:pointer;
-transition:0.3s;
 }
 
 nav a:hover{color:var(--accent);} 
 
-/* SECTION TRANSITIONS */
+/* SECTIONS */
 section{
 display:none;
 padding:100px 12%;
-background:#ffffffdd;
+background:#ffffffee;
 margin:40px;
 border-radius:12px;
 box-shadow:0 15px 40px rgba(0,0,0,0.08);
-opacity:0;
-transition:opacity 0.8s ease;
+animation:fadeIn 0.6s ease;
 }
 
-section.active{
-display:block;
-animation:fadeSection 0.8s ease forwards;
-}
+section.active{display:block;}
 
-@keyframes fadeSection{
-from{opacity:0;} 
-to{opacity:1;} }
+@keyframes fadeIn{from{opacity:0;} to{opacity:1;}}
 
-h2{
-font-size:40px;
-border-bottom:2px solid var(--accent);
-padding-bottom:10px;
-margin-bottom:30px;
-}
+h2{font-size:40px;border-bottom:2px solid var(--accent);padding-bottom:10px;margin-bottom:30px;}
 
-p{font-size:18px;line-height:1.8;text-align:justify;}
+p{font-size:18px;line-height:1.8;text-align:justify;margin-bottom:20px;}
 
-/* Timeline Buttons */
 .timeline-controls button{
 margin:6px;
 padding:8px 14px;
@@ -121,11 +90,9 @@ border:none;
 background:var(--primary);
 color:white;
 cursor:pointer;
-transition:0.3s;
 }
 .timeline-controls button:hover{background:var(--accent);} 
 
-/* Footer */
 footer{
 background:var(--primary);
 color:white;
@@ -134,7 +101,6 @@ padding:60px;
 }
 footer img{height:28px;margin-left:10px;vertical-align:middle;}
 
-/* Tooltip */
 .tooltip{
 position:absolute;
 background:#1b263b;
@@ -156,21 +122,21 @@ opacity:0;
 </div>
 
 <nav>
-<a onclick="showSection('overview')">Overview</a>
-<a onclick="showSection('timeline')">Timeline</a>
-<a onclick="showSection('analysis')">Analysis</a>
-<a onclick="showSection('network')">Network</a>
-<a onclick="showSection('tools')">Tools & Techniques</a>
-<a onclick="showSection('budget')">Budget</a>
+<a onclick="showSection(event,'overview')">Overview</a>
+<a onclick="showSection(event,'timeline')">Timeline</a>
+<a onclick="showSection(event,'analysis')">Analysis</a>
+<a onclick="showSection(event,'network')">Network</a>
+<a onclick="showSection(event,'tools')">Tools & Techniques</a>
+<a onclick="showSection(event,'budget')">Budget</a>
 </nav>
 
 <section id="overview" class="active">
 <h2>Overview</h2>
-<p>This project models the Eliot–Hale correspondence (1930–1969) as a relational and computational archive, examining emotional tone, religious vocabulary, and shifting patterns of intimacy across four decades.</p>
+<p>This project reconceptualises the Eliot–Hale correspondence (1930–1969) as a dynamic computational archive. Drawing inspiration from the Republic of Letters digital humanities initiative, it treats the letters not merely as biographical documents but as a relational network structured across time. By combining corpus linguistics, topic modelling, network analysis, and temporal visualisation, the project seeks to reveal patterns of emotional intensity, devotional language, and intellectual affiliation that unfold across four decades.</p>
 </section>
 
 <section id="timeline">
-<h2>Chronology</h2>
+<h2>Chronology (1930–1969)</h2>
 <div class="timeline-controls">
 <button onclick="setDecade('1930s')">1930s</button>
 <button onclick="setDecade('1940s')">1940s</button>
@@ -181,23 +147,27 @@ opacity:0;
 </section>
 
 <section id="analysis">
-<h2>Topic Modelling</h2>
+<h2>Computational Analysis</h2>
+<p>Latent Dirichlet Allocation (LDA) is applied to identify thematic clusters such as religious reflection, marital conflict, emotional dependence, artistic labour, and spiritual guilt. Sentiment modelling and lexical frequency tracking enable longitudinal measurement of tonal fluctuation across decades.</p>
 <canvas id="topicChart"></canvas>
 </section>
 
 <section id="network">
 <h2>Relational Network</h2>
+<p>This force-directed network models co-occurrence relationships among key individuals, institutions, and intellectual influences referenced within the correspondence. Node centrality reflects relational prominence; edge connections indicate thematic proximity.</p>
 <div id="networkGraph" style="height:600px;"></div>
 </section>
 
 <section id="tools">
 <h2>Tools & Techniques</h2>
-<p>Voyant Tools (lexical analysis), Gephi (network centrality modelling), TimelineJS (temporal structuring), Omeka (archival hosting), Named Entity Recognition (NER), and Latent Dirichlet Allocation (LDA) for topic modelling.</p>
+<p>The project integrates Voyant Tools for exploratory corpus analysis, enabling term frequency tracking, collocation detection, and keyword trend visualisation. Named Entity Recognition (NER) is applied to extract references to persons, institutions, religious figures, and places. These entities are disambiguated and structured as nodes within relational network models constructed using Gephi and D3.js.</p>
+<p>Topic modelling is conducted through probabilistic LDA frameworks, allowing the identification of thematic clusters whose prevalence can be plotted chronologically. Temporal structuring is supported through TimelineJS-style modelling, aligning textual shifts with major biographical and literary milestones, including Eliot’s 1927 Anglican conversion and the composition of Four Quartets. All datasets are cleaned, structured, and version-controlled to ensure reproducibility and methodological transparency.</p>
 </section>
 
 <section id="budget">
 <h2>Budget Framework</h2>
-<p>Funding supports research assistance, server hosting, domain maintenance, technical consultation, and dissemination. Built primarily with open-source tools for long-term sustainability.</p>
+<p>Funding requirements are modest due to reliance on open-source tools. Core costs include research assistance for corpus cleaning and metadata tagging; server hosting and domain maintenance; technical development for advanced interactive visualisation; and dissemination through conferences and peer-reviewed publication.</p>
+<p>Institutional support will provide infrastructure, IT consultation, and long-term digital preservation. Sustainability planning includes regular backups, repository version control, and clear documentation of scripts and data schemas. The long-term goal is to establish a durable digital research environment that contributes both to Eliot scholarship and to computational literary studies more broadly.</p>
 </section>
 
 <footer>
@@ -211,17 +181,17 @@ A Digital Humanities Research Initiative | Created by Deeptesh Sen as part of a 
 
 <script>
 
-function showSection(id){
+function showSection(e,id){
+e.preventDefault();
 document.querySelectorAll('section').forEach(sec=>sec.classList.remove('active'));
 document.getElementById(id).classList.add('active');
-window.scrollTo({top:0,behavior:'smooth'});
 }
 
 const timelineData={
-"1930s":"Early emotional intensification and post-conversion reflection.",
-"1940s":"Heightened theological language and wartime introspection.",
-"1950s":"Stabilised devotional tone and reflective distance.",
-"1960s":"Late correspondence marked by retrospection and legacy."
+"1930s":"Early intensification of emotional vocabulary; emergence of devotional language.",
+"1940s":"Heightened theological reflection and wartime spiritual anxiety.",
+"1950s":"Stabilised tone; mature devotional introspection.",
+"1960s":"Late correspondence marked by retrospection and legacy framing."
 };
 
 function setDecade(decade){
@@ -236,10 +206,17 @@ data:{labels:['1930s','1940s','1950s','1960s'],datasets:[
 ]}
 });
 
-// Network
-const width=document.getElementById('networkGraph').clientWidth;
+/* NETWORK FIX: render only when visible */
+function renderNetwork(){
+const container=document.getElementById('networkGraph');
+if(container.dataset.rendered) return;
+
+const width=container.clientWidth;
 const height=600;
-const svg=d3.select('#networkGraph').append('svg').attr('width',width).attr('height',height);
+
+const svg=d3.select(container).append('svg')
+.attr('width',width)
+.attr('height',height);
 
 const nodes=[{id:'Eliot'},{id:'Emily Hale'},{id:'Vivienne Eliot'},{id:'Anglican Church'},{id:'Dante'}];
 const links=[
@@ -306,6 +283,17 @@ function dragended(event,d){
 if(!event.active) simulation.alphaTarget(0);
 d.fx=null; d.fy=null;
 }
+
+container.dataset.rendered=true;
+}
+
+/* Observe section change to trigger network render */
+const observer=new MutationObserver(()=>{
+if(document.getElementById('network').classList.contains('active')){
+renderNetwork();
+}
+});
+observer.observe(document.getElementById('network'),{attributes:true});
 
 </script>
 
