@@ -1,257 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digitizing Intimacy | 1930–1969</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://d3js.org/d3.v7.min.js"></script>
-
-<style>
-:root{
---primary:#1b263b;
---accent:#415a77;
-}
-
-/* GLOBAL */
-body{
-margin:0;
-font-family:'Inter',sans-serif;
-background:url('https://www.transparenttextures.com/patterns/aged-paper.png');
-color:#1b263b;
-overflow-x:hidden;
-}
-
-h1,h2,h3{
-font-family:'Playfair Display',serif;
-}
-
-/* HERO — TEXT MASK FIX */
-.hero{
-background:
-linear-gradient(to right,
-rgba(27,38,59,0.85) 0%,
-rgba(27,38,59,0.75) 35%,
-rgba(27,38,59,0.45) 60%,
-rgba(27,38,59,0.2) 100%
-),
-url('images/Eliot-Hale.jpg') center center/cover no-repeat;
-
-min-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:flex-start;
-padding:0 10%;
-color:white;
-}
-
-.hero h1{
-font-size:64px;
-margin:0 0 20px 0;
-max-width:700px;
-line-height:1.1;
-}
-
-.hero p{
-font-size:22px;
-max-width:650px;
-line-height:1.6;
-}
-
-/* NAV */
-nav{
-background:#ffffffee;
-padding:15px;
-text-align:center;
-position:sticky;
-top:0;
-z-index:1000;
-box-shadow:0 2px 12px rgba(0,0,0,0.08);
-}
-
-nav a{
-margin:0 18px;
-text-decoration:none;
-color:var(--primary);
-font-weight:600;
-cursor:pointer;
-transition:0.3s ease;
-}
-
-nav a:hover{
-color:var(--accent);
-}
-
-/* SECTIONS */
-section{
-display:none;
-padding:100px 12%;
-background:#ffffffee;
-margin:40px;
-border-radius:14px;
-box-shadow:0 20px 45px rgba(0,0,0,0.08);
-animation:fadeIn 0.6s ease;
-}
-
-section.active{
-display:block;
-}
-
-@keyframes fadeIn{
-from{opacity:0;}
-to{opacity:1;}
-}
-
-h2{
-font-size:40px;
-border-bottom:2px solid var(--accent);
-padding-bottom:10px;
-margin-bottom:30px;
-}
-
-p{
-font-size:18px;
-line-height:1.85;
-text-align:justify;
-margin-bottom:22px;
-}
-
-/* Timeline */
-.timeline-controls button{
-margin:6px;
-padding:8px 14px;
-border:none;
-background:var(--primary);
-color:white;
-cursor:pointer;
-border-radius:4px;
-}
-
-.timeline-controls button:hover{
-background:var(--accent);
-}
-
-/* Tooltip */
-.tooltip{
-position:absolute;
-background:#1b263b;
-color:white;
-padding:6px 10px;
-border-radius:4px;
-font-size:14px;
-pointer-events:none;
-opacity:0;
-transition:opacity 0.2s ease;
-}
-
-/* Footer */
-footer{
-background:var(--primary);
-color:white;
-text-align:center;
-padding:60px 20px;
-margin-top:60px;
-}
-
-footer img{
-height:28px;
-margin-left:10px;
-vertical-align:middle;
-}
-
-@media (max-width:900px){
-.hero h1{font-size:42px;}
-.hero p{font-size:18px;}
-section{margin:20px;padding:60px 8%;}
-}
-</style>
-</head>
-
-<body>
-
-<div class="hero">
-<h1>Digitizing Intimacy</h1>
-<p>A Computational and Network-Based Modelling of the T.S. Eliot–Emily Hale Correspondence (1930–1969)</p>
-</div>
-
-<nav>
-<a onclick="showSection('overview')">Overview</a>
-<a onclick="showSection('timeline')">Timeline</a>
-<a onclick="showSection('analysis')">Analysis</a>
-<a onclick="showSection('network')">Network</a>
-<a onclick="showSection('tools')">Tools & Techniques</a>
-<a onclick="showSection('budget')">Budget</a>
-<a onclick="showSection('letters')">Eliot–Hale Letters</a>
-</nav>
-
-<section id="overview" class="active">
-<h2>Overview</h2>
-<p>This project reconceptualises the Eliot–Hale correspondence (1930–1969) as a dynamic computational archive inspired by the Republic of Letters initiative. It treats the letters not merely as biographical documents but as a temporally structured and relational dataset. By combining corpus linguistics, network analysis, topic modelling, and longitudinal visualisation, the project seeks to illuminate patterns of intimacy, devotion, and intellectual transformation across four decades.</p>
-</section>
-
-<section id="timeline">
-<h2>Chronology</h2>
-<div class="timeline-controls">
-<button onclick="setDecade('1930s')">1930s</button>
-<button onclick="setDecade('1940s')">1940s</button>
-<button onclick="setDecade('1950s')">1950s</button>
-<button onclick="setDecade('1960s')">1960s</button>
-</div>
-<div id="timelineContent" style="margin-top:30px;"></div>
-</section>
-
-<section id="analysis">
-<h2>Computational Analysis</h2>
-<p>Latent Dirichlet Allocation (LDA) identifies recurring thematic clusters such as religious reflection, marital conflict, emotional dependence, artistic labour, illness, and spiritual guilt. Topic prevalence is plotted chronologically to track intensification across historical moments.</p>
-<p>Sentiment modelling and lexical frequency analysis measure fluctuations in devotional language, relational vocabulary, and tonal intensity before and after key biographical milestones.</p>
-<canvas id="topicChart"></canvas>
-</section>
-
-<section id="network">
-<h2>Relational Network</h2>
-<p>This force-directed network models co-occurrence relationships among individuals, institutions, religious figures, and intellectual influences referenced in the correspondence. Node centrality reflects prominence within Eliot’s private discourse.</p>
-<div id="networkGraph" style="height:600px;"></div>
-</section>
-
-<section id="tools">
-<h2>Tools & Techniques</h2>
-<p>The project integrates Voyant Tools for lexical frequency and collocation analysis, enabling exploratory corpus investigation. Named Entity Recognition (NER) extracts references to persons, institutions, places, and publications.</p>
-<p>Gephi and D3.js are used to construct weighted co-occurrence networks, calculating degree and betweenness centrality to identify structural prominence. Topic modelling is implemented using probabilistic LDA frameworks. Timeline-based structuring aligns textual shifts with major historical and literary milestones. All scripts and datasets are version-controlled to ensure reproducibility.</p>
-</section>
-
-<section id="budget">
-<h2>Budget Framework</h2>
-<p>Funding supports research assistance for corpus cleaning and metadata tagging, technical development of interactive visualisations, domain hosting, and long-term digital preservation.</p>
-<p>The project relies primarily on open-source tools, ensuring modest financial requirements and long-term sustainability. Institutional support provides infrastructure, IT consultation, and archival oversight. Dissemination includes conference presentations, peer-reviewed publications, and integration into teaching modules.</p>
-</section>
-
-<section id="letters">
-<h2>Eliot–Hale Letters</h2>
-<p>You can read the full correspondence here:
-<a href="https://tseliot.com/the-eliot-hale-letters" target="_blank"><strong>The Eliot–Hale Letters Digital Archive</strong></a>.
-</p>
-</section>
-
-<footer>
-<p>
-A Digital Humanities Research Initiative | Created by Deeptesh Sen as part of a project for SCTR, Jadavpur University
-<img src="https://licensebuttons.net/l/by-nc/4.0/88x31.png">
-</p>
-</footer>
-
-<div class="tooltip" id="tooltip"></div>
-
 <script>
 
+/* =========================
+   SECTION SWITCHING
+========================= */
 function showSection(id){
-document.querySelectorAll('section').forEach(sec=>sec.classList.remove('active'));
-document.getElementById(id).classList.add('active');
+  document.querySelectorAll('section').forEach(sec=>sec.classList.remove('active'));
+  const section = document.getElementById(id);
+  section.classList.add('active');
+
+  if(id === "network"){
+      setTimeout(renderNetwork, 100); // render AFTER visible
+  }
 }
 
-/* Timeline */
+/* =========================
+   TIMELINE
+========================= */
 const timelineData={
 "1930s":"Emergence of intensified emotional vocabulary and devotional framing.",
 "1940s":"Heightened theological reflection and wartime introspection.",
@@ -260,100 +24,180 @@ const timelineData={
 };
 
 function setDecade(decade){
-document.getElementById('timelineContent').innerText=timelineData[decade];
+  document.getElementById('timelineContent').innerText=timelineData[decade];
 }
 
-/* Chart */
+/* =========================
+   TOPIC CHART
+========================= */
 new Chart(document.getElementById('topicChart'),{
-type:'line',
-data:{
-labels:['1930s','1940s','1950s','1960s'],
-datasets:[
-{label:'Religion',data:[4,8,7,5],borderWidth:3},
-{label:'Love & Intimacy',data:[7,6,4,2],borderWidth:3}
-]}
+  type:'line',
+  data:{
+    labels:['1930s','1940s','1950s','1960s'],
+    datasets:[
+      {label:'Religion',data:[4,8,7,5],borderWidth:3},
+      {label:'Love & Intimacy',data:[7,6,4,2],borderWidth:3}
+    ]
+  }
 });
 
-/* Network */
-const width=document.getElementById('networkGraph').clientWidth;
-const height=600;
+/* =========================
+   SENTIMENT ANALYSIS
+========================= */
 
-const svg=d3.select('#networkGraph').append('svg')
-.attr('width',width)
-.attr('height',height);
+const sentimentData = {
+  labels:["Letter 1","Letter 2","Letter 3","Letter 4","Letter 5"],
+  values:[0.6,0.8,0.3,0.7,0.5]  // mock polarity scores
+};
 
-const nodes=[
-{id:'Eliot'},
-{id:'Emily Hale'},
-{id:'Vivienne Eliot'},
-{id:'Anglican Church'},
-{id:'Dante'}
-];
+const sentimentCanvas = document.createElement("canvas");
+sentimentCanvas.id = "sentimentChart";
+document.getElementById("analysis").appendChild(sentimentCanvas);
 
-const links=[
-{source:'Eliot',target:'Emily Hale'},
-{source:'Eliot',target:'Vivienne Eliot'},
-{source:'Eliot',target:'Anglican Church'},
-{source:'Eliot',target:'Dante'}
-];
-
-const simulation=d3.forceSimulation(nodes)
-.force('link',d3.forceLink(links).id(d=>d.id).distance(150))
-.force('charge',d3.forceManyBody().strength(-400))
-.force('center',d3.forceCenter(width/2,height/2));
-
-svg.selectAll('line')
-.data(links)
-.enter().append('line')
-.attr('stroke','#999');
-
-const tooltip=d3.select('#tooltip');
-
-const node=svg.selectAll('circle')
-.data(nodes)
-.enter().append('circle')
-.attr('r',14)
-.attr('fill','#1b263b')
-.call(d3.drag()
-.on('start',(event,d)=>{
-if(!event.active) simulation.alphaTarget(0.3).restart();
-d.fx=d.x; d.fy=d.y;
-})
-.on('drag',(event,d)=>{
-d.fx=event.x; d.fy=event.y;
-})
-.on('end',(event,d)=>{
-if(!event.active) simulation.alphaTarget(0);
-d.fx=null; d.fy=null;
-}))
-.on('mouseover',(event,d)=>{
-tooltip.style('opacity',1)
-.style('left',event.pageX+10+'px')
-.style('top',event.pageY-10+'px')
-.html(d.id);
-})
-.on('mouseout',()=>tooltip.style('opacity',0));
-
-const labels=svg.selectAll('text')
-.data(nodes)
-.enter().append('text')
-.text(d=>d.id)
-.attr('font-size','14px')
-.attr('dx',18)
-.attr('dy','.35em');
-
-simulation.on('tick',()=>{
-svg.selectAll('line')
-.attr('x1',d=>d.source.x)
-.attr('y1',d=>d.source.y)
-.attr('x2',d=>d.target.x)
-.attr('y2',d=>d.target.y);
-
-node.attr('cx',d=>d.x).attr('cy',d=>d.y);
-labels.attr('x',d=>d.x).attr('y',d=>d.y);
+new Chart(sentimentCanvas,{
+  type:'bar',
+  data:{
+    labels:sentimentData.labels,
+    datasets:[{
+      label:"Sentiment Polarity",
+      data:sentimentData.values
+    }]
+  }
 });
+
+/* =========================
+   WORD COUNT INTERACTIVE
+========================= */
+
+const wordCountData = {
+  "1930s":[1200,1500,980],
+  "1940s":[1600,1700,1400],
+  "1950s":[1100,1300,1250],
+  "1960s":[900,850,1000]
+};
+
+const wordMenu = document.createElement("div");
+wordMenu.innerHTML = `
+<h3>Word Count per Letter</h3>
+<select id="decadeSelect">
+<option value="1930s">1930s</option>
+<option value="1940s">1940s</option>
+<option value="1950s">1950s</option>
+<option value="1960s">1960s</option>
+</select>
+<canvas id="wordChart"></canvas>
+`;
+
+document.getElementById("analysis").appendChild(wordMenu);
+
+let wordChart = new Chart(document.getElementById("wordChart"),{
+  type:'bar',
+  data:{
+    labels:["Letter A","Letter B","Letter C"],
+    datasets:[{
+      label:"Word Count",
+      data:wordCountData["1930s"]
+    }]
+  }
+});
+
+document.getElementById("decadeSelect").addEventListener("change",function(){
+  const decade = this.value;
+  wordChart.data.datasets[0].data = wordCountData[decade];
+  wordChart.update();
+});
+
+/* =========================
+   NETWORK FIXED RENDER
+========================= */
+
+let networkRendered = false;
+
+function renderNetwork(){
+
+  if(networkRendered) return;
+
+  const container = document.getElementById('networkGraph');
+  const width = container.clientWidth;
+  const height = 600;
+
+  const svg = d3.select(container).append('svg')
+      .attr('width',width)
+      .attr('height',height);
+
+  const nodes=[
+    {id:'Eliot'},
+    {id:'Emily Hale'},
+    {id:'Vivienne Eliot'},
+    {id:'Anglican Church'},
+    {id:'Dante'}
+  ];
+
+  const links=[
+    {source:'Eliot',target:'Emily Hale'},
+    {source:'Eliot',target:'Vivienne Eliot'},
+    {source:'Eliot',target:'Anglican Church'},
+    {source:'Eliot',target:'Dante'}
+  ];
+
+  const simulation=d3.forceSimulation(nodes)
+    .force('link',d3.forceLink(links).id(d=>d.id).distance(150))
+    .force('charge',d3.forceManyBody().strength(-400))
+    .force('center',d3.forceCenter(width/2,height/2));
+
+  svg.selectAll('line')
+    .data(links)
+    .enter().append('line')
+    .attr('stroke','#999');
+
+  const tooltip=d3.select('#tooltip');
+
+  const node=svg.selectAll('circle')
+    .data(nodes)
+    .enter().append('circle')
+    .attr('r',14)
+    .attr('fill','#1b263b')
+    .call(d3.drag()
+      .on('start',(event,d)=>{
+        if(!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx=d.x; d.fy=d.y;
+      })
+      .on('drag',(event,d)=>{
+        d.fx=event.x; d.fy=event.y;
+      })
+      .on('end',(event,d)=>{
+        if(!event.active) simulation.alphaTarget(0);
+        d.fx=null; d.fy=null;
+      })
+    )
+    .on('mouseover',(event,d)=>{
+      tooltip.style('opacity',1)
+      .style('left',event.pageX+10+'px')
+      .style('top',event.pageY-10+'px')
+      .html(d.id);
+    })
+    .on('mouseout',()=>tooltip.style('opacity',0));
+
+  const labels=svg.selectAll('text')
+    .data(nodes)
+    .enter().append('text')
+    .text(d=>d.id)
+    .attr('font-size','14px')
+    .attr('dx',18)
+    .attr('dy','.35em');
+
+  simulation.on('tick',()=>{
+    svg.selectAll('line')
+      .attr('x1',d=>d.source.x)
+      .attr('y1',d=>d.source.y)
+      .attr('x2',d=>d.target.x)
+      .attr('y2',d=>d.target.y);
+
+    node.attr('cx',d=>d.x).attr('cy',d=>d.y);
+    labels.attr('x',d=>d.x).attr('y',d=>d.y);
+  });
+
+  networkRendered = true;
+}
 
 </script>
-
-</body>
-</html>
