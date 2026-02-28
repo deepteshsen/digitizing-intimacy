@@ -10,7 +10,6 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 
 <style>
-
 :root{
 --primary:#1b263b;
 --accent:#415a77;
@@ -29,24 +28,30 @@ h1,h2,h3{
 font-family:'Playfair Display',serif;
 }
 
-/* HERO */
+/* HERO — TEXT MASK FIX */
 .hero{
 background:
-linear-gradient(rgba(27,38,59,0.38),rgba(27,38,59,0.38)),
+linear-gradient(to right,
+rgba(27,38,59,0.85) 0%,
+rgba(27,38,59,0.75) 35%,
+rgba(27,38,59,0.45) 60%,
+rgba(27,38,59,0.2) 100%
+),
 url('images/Eliot-Hale.jpg') center center/cover no-repeat;
+
 min-height:100vh;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:flex-start;
-padding:0 8%;
+padding:0 10%;
 color:white;
 }
 
 .hero h1{
 font-size:64px;
 margin:0 0 20px 0;
-max-width:720px;
+max-width:700px;
 line-height:1.1;
 }
 
@@ -114,7 +119,7 @@ text-align:justify;
 margin-bottom:22px;
 }
 
-/* Timeline Buttons */
+/* Timeline */
 .timeline-controls button{
 margin:6px;
 padding:8px 14px;
@@ -129,7 +134,7 @@ border-radius:4px;
 background:var(--accent);
 }
 
-/* Network */
+/* Tooltip */
 .tooltip{
 position:absolute;
 background:#1b263b;
@@ -162,7 +167,6 @@ vertical-align:middle;
 .hero p{font-size:18px;}
 section{margin:20px;padding:60px 8%;}
 }
-
 </style>
 </head>
 
@@ -185,7 +189,7 @@ section{margin:20px;padding:60px 8%;}
 
 <section id="overview" class="active">
 <h2>Overview</h2>
-<p>This project reconceptualises the Eliot–Hale correspondence (1930–1969) as a dynamic computational archive inspired by the Republic of Letters initiative. It combines corpus linguistics, topic modelling, network analysis, and temporal visualisation to reveal structural patterns of intimacy, devotion, and intellectual transformation across four decades.</p>
+<p>This project reconceptualises the Eliot–Hale correspondence (1930–1969) as a dynamic computational archive inspired by the Republic of Letters initiative. It treats the letters not merely as biographical documents but as a temporally structured and relational dataset. By combining corpus linguistics, network analysis, topic modelling, and longitudinal visualisation, the project seeks to illuminate patterns of intimacy, devotion, and intellectual transformation across four decades.</p>
 </section>
 
 <section id="timeline">
@@ -201,24 +205,27 @@ section{margin:20px;padding:60px 8%;}
 
 <section id="analysis">
 <h2>Computational Analysis</h2>
-<p>Latent Dirichlet Allocation (LDA) identifies recurring thematic clusters including religious reflection, emotional dependence, artistic labour, and marital conflict. Sentiment tracking enables longitudinal measurement of tonal shifts.</p>
+<p>Latent Dirichlet Allocation (LDA) identifies recurring thematic clusters such as religious reflection, marital conflict, emotional dependence, artistic labour, illness, and spiritual guilt. Topic prevalence is plotted chronologically to track intensification across historical moments.</p>
+<p>Sentiment modelling and lexical frequency analysis measure fluctuations in devotional language, relational vocabulary, and tonal intensity before and after key biographical milestones.</p>
 <canvas id="topicChart"></canvas>
 </section>
 
 <section id="network">
 <h2>Relational Network</h2>
-<p>This force-directed network models co-occurrence relationships among individuals and institutions referenced within the correspondence.</p>
+<p>This force-directed network models co-occurrence relationships among individuals, institutions, religious figures, and intellectual influences referenced in the correspondence. Node centrality reflects prominence within Eliot’s private discourse.</p>
 <div id="networkGraph" style="height:600px;"></div>
 </section>
 
 <section id="tools">
 <h2>Tools & Techniques</h2>
-<p>Voyant Tools enables lexical frequency and collocation analysis. Named Entity Recognition extracts references to persons and institutions. Gephi and D3.js construct weighted co-occurrence networks. LDA modelling identifies thematic clusters whose prevalence is plotted chronologically. Timeline-based structuring aligns textual shifts with biographical and literary milestones.</p>
+<p>The project integrates Voyant Tools for lexical frequency and collocation analysis, enabling exploratory corpus investigation. Named Entity Recognition (NER) extracts references to persons, institutions, places, and publications.</p>
+<p>Gephi and D3.js are used to construct weighted co-occurrence networks, calculating degree and betweenness centrality to identify structural prominence. Topic modelling is implemented using probabilistic LDA frameworks. Timeline-based structuring aligns textual shifts with major historical and literary milestones. All scripts and datasets are version-controlled to ensure reproducibility.</p>
 </section>
 
 <section id="budget">
 <h2>Budget Framework</h2>
-<p>Funding supports research assistance, corpus cleaning, server hosting, technical development, and dissemination. Built primarily with open-source infrastructure to ensure sustainability and reproducibility.</p>
+<p>Funding supports research assistance for corpus cleaning and metadata tagging, technical development of interactive visualisations, domain hosting, and long-term digital preservation.</p>
+<p>The project relies primarily on open-source tools, ensuring modest financial requirements and long-term sustainability. Institutional support provides infrastructure, IT consultation, and archival oversight. Dissemination includes conference presentations, peer-reviewed publications, and integration into teaching modules.</p>
 </section>
 
 <section id="letters">
@@ -239,7 +246,6 @@ A Digital Humanities Research Initiative | Created by Deeptesh Sen as part of a 
 
 <script>
 
-/* Section Switching */
 function showSection(id){
 document.querySelectorAll('section').forEach(sec=>sec.classList.remove('active'));
 document.getElementById(id).classList.add('active');
@@ -247,10 +253,10 @@ document.getElementById(id).classList.add('active');
 
 /* Timeline */
 const timelineData={
-"1930s":"Early emotional intensification and devotional language.",
-"1940s":"Heightened theological vocabulary and wartime reflection.",
-"1950s":"Stabilised devotional tone and intellectual maturity.",
-"1960s":"Late correspondence marked by retrospection."
+"1930s":"Emergence of intensified emotional vocabulary and devotional framing.",
+"1940s":"Heightened theological reflection and wartime introspection.",
+"1950s":"Stabilised devotional tone and intellectual consolidation.",
+"1960s":"Late retrospective framing and legacy consciousness."
 };
 
 function setDecade(decade){
